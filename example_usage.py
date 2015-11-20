@@ -10,8 +10,8 @@ from constants import AttributeTypes
 @argh.arg("monster_id", type=int, help="ID of the monster")
 def get_monster(monster_id, verbose=False):
     """ outputs a monster's complete stats """
+    print monster_id
     padpy = Pad(verbose=verbose)
-
     monster = padpy.get_monster(monster_id)
     padpy.pretty_print(monster)
 

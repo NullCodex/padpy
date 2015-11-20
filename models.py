@@ -33,7 +33,6 @@ class BaseManager(object):
         """ create the Model instance """
         if self.pass_pad:
             kwargs['pad'] = getattr(self, 'pad', None)
-
         return self.model(**kwargs)
 
     def load_data(self, data):
@@ -67,8 +66,10 @@ class BaseManager(object):
         list or a single object, depending on can_find_many 
         and has_default_object
         """
-        objects =  filter(lambda obj: getattr(obj, self.identifier) == id, self.objects)
-        if not self.can_find_many:
+	print id
+	objects =  filter(lambda obj: getattr(obj, self.identifier) == id, self.objects)
+        print objects
+	if not self.can_find_many:
             if objects:
                 assert(len(objects)==1)# there should only be 1 object with this id
                 return objects[0] 
@@ -206,10 +207,27 @@ class Element(object):
         )
 
 class Type(object):
+    
+    type_convert_map = {
+	0 : 7,
+	1 : 2,
+	2 : 3,
+	3 : 4,
+	4 : 1,
+	5 : 6,
+	6 : 5,
+	7 : 9,
+	8 : 12,
+	12 : 11,
+	14 : 8,
+    }
     def __init__(self, id):
-        self.id = id
-        self.type = TypeIds[id]
-
+	print id
+        self.id = self.type_convert_map[id]
+	print self.id
+        self.type = TypeIds[self.id]
+	print "heere's the type:"
+	print self.type
     @property
     def long_name(self):
         return self.type.name
@@ -269,6 +287,8 @@ class Monster(object):
         return "<Monster "+str(self)+">"
 
     def load_data(self, **kwargs):
+	print "here's the args"
+	print kwargs
         self.id = int(kwargs['id'])
         self.version = kwargs['version']
 
